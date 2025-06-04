@@ -17,8 +17,10 @@
   </script>
 </head>
 
+<!-- Make body a flex column and fill the viewport -->
 <body class="flex flex-col min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
 
+  <!-- Main content: flex-grow so footer stays visible at bottom -->
   <div class="flex-grow max-w-5xl mx-auto p-6">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
@@ -62,7 +64,7 @@
       </div>
     </div>
 
-    <!-- Book Selector, Chapter Selector, and Load Button -->
+    <!-- Book Selector and Load Button -->
     <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-6">
       <div class="flex-1">
         <label for="bookSelect" class="block text-sm font-medium mb-1">Book</label>
@@ -72,14 +74,7 @@
           <option value="">Select Book</option>
         </select>
       </div>
-      <div class="flex-1">
-        <label for="chapterSelect" class="block text-sm font-medium mb-1">Chapter</label>
-        <select id="chapterSelect"
-          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600"
-          disabled>
-          <option value="">Select Chapter</option>
-        </select>
-      </div>
+
       <button id="loadBtn"
         class="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded text-black disabled:opacity-50"
         disabled>
@@ -101,11 +96,10 @@
         <input type="checkbox" id="toggleTTS" checked />
         <span>Enable Text-to-Speech</span>
       </label>
-    </div>
-    <div class="flex flex-wrap items-center gap-4 mb-4">
       <label class="inline-flex items-center gap-2 text-sm">
-        <span> TTS Dialect</span>
-        <select id="ttsLangSelect" class="border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-600 text-sm">
+        <span>Chinese TTS Dialect</span>
+        <select id="ttsLangSelect"
+          class="border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-600 text-sm">
           <option value="zh-CN">Mandarin</option>
           <option value="zh-HK">Cantonese</option>
         </select>
@@ -115,6 +109,7 @@
         🔗 Copy Permalink
       </button>
     </div>
+
     <!-- Chapter Title -->
     <h2 id="chapterTitle" class="text-xl font-bold mb-2">—</h2>
 
@@ -134,11 +129,11 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer
-    style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 0.75rem; color: rgba(0, 0, 0, 0.3); font-weight: 300; z-index: 1000; pointer-events: none;">
-    &copy; 2025 黄俊杰 All rights reserved.
-  </footer>
+  <!-- Footer (always visible at bottom) -->
+<footer
+  style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 0.75rem; color: rgba(0, 0, 0, 0.3); font-weight: 300; z-index: 1000; pointer-events: none;">
+  &copy; 2025 黄俊杰 All rights reserved.
+</footer>
 
   <script>
     const toggle = document.getElementById('darkModeToggle');
@@ -157,7 +152,6 @@
     const versionA = document.getElementById('versionA');
     const versionB = document.getElementById('versionB');
     const bookSelect = document.getElementById('bookSelect');
-    const chapterSelect = document.getElementById('chapterSelect');
     const loadBtn = document.getElementById('loadBtn');
     const queryWordSpan = document.getElementById('queryWord');
     const chapterTitle = document.getElementById('chapterTitle');
@@ -181,60 +175,16 @@
       const verA = versionA.value;
       const verB = versionB.value;
       if (verA && verB) {
-        // Load Bible A to populate books
         const jsonA = await importBible(verA);
         bookSelect.innerHTML = jsonA
           .map((book, idx) => `<option value="${idx}">${book.name}</option>`)
           .join('');
         bookSelect.disabled = false;
-
-        // Reset chapter and load button
-        chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
-        chapterSelect.disabled = true;
-        loadBtn.disabled = true;
+        loadBtn.disabled = false;
         comparisonContainer.innerHTML = '';
         chapterTitle.textContent = '—';
-      } else {
-        // If either version is unselected, disable all downstream selects
-        bookSelect.innerHTML = '<option value="">Select Book</option>';
-        bookSelect.disabled = true;
-        chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
-        chapterSelect.disabled = true;
-        loadBtn.disabled = true;
       }
     }
-
-    versionA.addEventListener('change', tryEnableBookSelect);
-    versionB.addEventListener('change', tryEnableBookSelect);
-
-    // When a book is selected, populate chapters
-    bookSelect.addEventListener('change', async () => {
-      const verA = versionA.value;
-      const idxBook = parseInt(bookSelect.value, 10);
-      if (!isNaN(idxBook) && verA) {
-        const jsonA = await importBible(verA);
-        const bookDataA = jsonA[idxBook];
-        const numChaps = bookDataA.chapters.length;
-
-        // Populate chapterSelect with 1..numChaps
-        let options = '<option value="">Select Chapter</option>';
-        for (let i = 1; i <= numChaps; i++) {
-          options += `<option value="${i}">${i}</option>`;
-        }
-        chapterSelect.innerHTML = options;
-        chapterSelect.disabled = false;
-        loadBtn.disabled = true;
-      } else {
-        chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
-        chapterSelect.disabled = true;
-        loadBtn.disabled = true;
-      }
-    });
-
-    // Enable load button when a chapter is chosen
-    chapterSelect.addEventListener('change', () => {
-      loadBtn.disabled = !chapterSelect.value;
-    });
 
     function showToast(message) {
       const toast = document.getElementById('toast');
@@ -247,17 +197,19 @@
       }, 2500);
     }
 
+    versionA.addEventListener('change', tryEnableBookSelect);
+    versionB.addEventListener('change', tryEnableBookSelect);
+
     loadBtn.addEventListener('click', async () => {
       const verA = versionA.value;
       const verB = versionB.value;
       const idxBook = parseInt(bookSelect.value, 10);
-      const chapNumber = parseInt(chapterSelect.value, 10);
-      const chapIdx = chapNumber - 1; // zero-based index
+      const chapIdx = 0;
       const bookName = bookSelect.selectedOptions[0]?.text || '';
       queryWordSpan.textContent = bookName.toLowerCase();
 
-      if (!verA || !verB || isNaN(idxBook) || isNaN(chapIdx)) {
-        alert('Please select both Bible versions, a book, and a chapter.');
+      if (!verA || !verB || isNaN(idxBook)) {
+        alert('Please select both Bible versions and a book.');
         return;
       }
 
@@ -271,10 +223,11 @@
 
       const bookDataA = jsonA[idxBook];
       const bookDataB = jsonB[idxBook];
+
       const versesA = bookDataA.chapters[chapIdx] || [];
       const versesB = bookDataB.chapters[chapIdx] || [];
 
-      chapterTitle.textContent = `${bookDataA.name} ${chapNumber}`;
+      chapterTitle.textContent = `${bookDataA.name} ${chapIdx + 1}`;
       titleA.textContent = versionA.selectedOptions[0].text;
       titleB.textContent = versionB.selectedOptions[0].text;
 
@@ -341,12 +294,10 @@
       toggleCantonese.dispatchEvent(new Event('change'));
       toggleTTS.dispatchEvent(new Event('change'));
 
-      // Update URL parameters
       const newParams = new URLSearchParams();
       newParams.set('bible1', verA);
       newParams.set('bible2', verB);
       newParams.set('book', idxBook);
-      newParams.set('chapter', chapNumber);
       window.history.replaceState(null, '', `${window.location.pathname}?${newParams.toString()}`);
     });
 
@@ -373,33 +324,20 @@
       const b1 = params.get('bible1');
       const b2 = params.get('bible2');
       const bookParam = params.get('book');
-      const chapParam = params.get('chapter');
 
-      if (b1 && b2 && bookParam !== null && chapParam !== null) {
+      if (b1 && b2 && bookParam !== null) {
         versionA.value = b1;
         versionB.value = b2;
         await tryEnableBookSelect();
-
-        const idxBook = Number(bookParam);
-        if (!isNaN(idxBook) && bookSelect.options[idxBook]) {
-          bookSelect.value = idxBook;
-          // Trigger book-select change to populate chapters
-          const event = new Event('change');
-          bookSelect.dispatchEvent(event);
-
-          // Wait a moment for chapters to populate
-          setTimeout(() => {
-            const chapNumber = Number(chapParam);
-            if (!isNaN(chapNumber) && chapterSelect.options[chapNumber]) {
-              chapterSelect.value = chapNumber;
-              chapterSelect.dispatchEvent(new Event('change'));
-              loadBtn.click();
-            }
-          }, 200);
+        const idx = Number(bookParam);
+        if (!isNaN(idx) && bookSelect.options[idx]) {
+          bookSelect.value = idx;
         }
+        loadBtn.click();
       }
     });
 
+    // Copy permalink button logic
     document.getElementById('copyPermalink').addEventListener('click', () => {
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(() => {
