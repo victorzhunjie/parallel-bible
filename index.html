@@ -18,14 +18,15 @@
   </script>
 </head>
 
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-  <div class="max-w-5xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-4">
+<body class="flex flex-col min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <div class="flex-grow max-w-5xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
       <h1 class="text-2xl font-semibold">
         Parallel Bible results for "<span id="queryWord">book</span>"
       </h1>
       <label class="inline-flex items-center cursor-pointer text-sm">
-        <input type="checkbox" id="darkModeToggle" class="sr-only">
+        <input type="checkbox" id="darkModeToggle" class="sr-only" />
         <span class="mr-2">Dark Mode</span>
         <div class="relative">
           <div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner dark:bg-gray-600"></div>
@@ -36,10 +37,12 @@
       </label>
     </div>
 
+    <!-- Version Selectors -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div>
         <label for="versionA" class="block text-sm font-medium mb-1">Bible A (Left)</label>
-        <select id="versionA" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
+        <select id="versionA"
+          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
           <option disabled selected value="">Select Bible A</option>
           <option value="en_niv" data-lang="eng">New International Version</option>
           <option value="zh_cuv" data-lang="chi">Chinese Union Version</option>
@@ -49,7 +52,8 @@
       </div>
       <div>
         <label for="versionB" class="block text-sm font-medium mb-1">Bible B (Right)</label>
-        <select id="versionB" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
+        <select id="versionB"
+          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
           <option disabled selected value="">Select Bible B</option>
           <option value="zh_cuv" data-lang="chi">Chinese Union Version</option>
           <option value="zh_ncv" data-lang="chi">Chinese NCV</option>
@@ -58,19 +62,25 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-4 mb-6">
+    <!-- Book Selector and Load Button -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-6">
       <div class="flex-1">
         <label for="bookSelect" class="block text-sm font-medium mb-1">Book</label>
-        <select id="bookSelect" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600" disabled>
+        <select id="bookSelect"
+          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600"
+          disabled>
           <option value="">Select Book</option>
         </select>
       </div>
-      <button id="loadBtn" class="mt-6 bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded text-black" disabled>
+      <button id="loadBtn"
+        class="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded text-black disabled:opacity-50"
+        disabled>
         Load
       </button>
     </div>
 
-    <div class="flex items-center gap-4 mb-4">
+    <!-- Toggles and TTS Dialect -->
+    <div class="flex flex-wrap items-center gap-4 mb-4">
       <label class="inline-flex items-center gap-2 text-sm">
         <input type="checkbox" id="togglePinyin" checked />
         <span>Show Mandarin Pinyin</span>
@@ -83,13 +93,12 @@
         <input type="checkbox" id="toggleTTS" checked />
         <span>Enable Text-to-Speech</span>
       </label>
-    </div>
-    <div class="flex items-center gap-4 mb-4">
       <label class="inline-flex items-center gap-2 text-sm">
-        <span>TTS Dialect</span>
-        <select id="ttsLangSelect" class="border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-600 text-sm">
-          <option value="zh-HK">Cantonese</option>
+        <span>Chinese TTS Dialect</span>
+        <select id="ttsLangSelect"
+          class="border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-600 text-sm">
           <option value="zh-CN">Mandarin</option>
+          <option value="zh-HK">Cantonese</option>
         </select>
       </label>
       <button id="copyPermalink"
@@ -97,20 +106,28 @@
         🔗 Copy Permalink
       </button>
     </div>
+    <!-- Chapter Title -->
     <h2 id="chapterTitle" class="text-xl font-bold mb-2">—</h2>
 
-    <div class="grid grid-cols-2 text-sm font-semibold border-b pb-2 mb-2 dark:border-gray-700">
+    <!-- Column Headers -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 text-sm font-semibold border-b pb-2 mb-2 dark:border-gray-700">
       <div id="titleA">Bible A</div>
       <div id="titleB">Bible B</div>
     </div>
 
+    <!-- Verse Comparison Container -->
     <div id="comparisonContainer" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
     <!-- Toast Notification -->
     <div id="toast"
       class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm">
     </div>
-
   </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-center py-4">
+    &copy; 2025 黄俊杰 All rights reserved.
+  </footer>
 
   <script>
     const toggle = document.getElementById('darkModeToggle');
@@ -168,7 +185,6 @@
       toast.textContent = message;
       toast.classList.remove('opacity-0');
       toast.classList.add('opacity-100');
-
       setTimeout(() => {
         toast.classList.remove('opacity-100');
         toast.classList.add('opacity-0');
@@ -226,7 +242,7 @@
 
         if (langA === 'chi' && versesA[i]) {
           if (togglePinyin.checked) {
-            const pinyinA = window.pinyinPro.pinyin(versesA[i], { type: 'array' }).join(' ');
+            const pinyinA = window.pinyinPro.pinyin(versesA[i], { toneType: 'none', type: 'array' }).join(' ');
             cellA += `<div class="text-xs text-gray-500 dark:text-gray-400 mt-1 pinyin">${pinyinA}</div>`;
           }
           if (toggleCantonese.checked && typeof window.toJyutping === 'function') {
@@ -250,7 +266,7 @@
         const ttsB = `<button class="text-blue-500 dark:text-blue-300 text-xs mt-1 speak-btn" data-text="${textB}" data-lang="${langB}" style="display: ${toggleTTS.checked ? 'inline-block' : 'none'}">🔊</button>`;
 
         comparisonContainer.innerHTML += `
-          <div class="${rowClass} grid grid-cols-2 px-2 py-1">
+          <div class="${rowClass} grid grid-cols-1 sm:grid-cols-2 px-2 py-1">
             <div>${cellA}${ttsA}</div>
             <div>${cellB}${ttsB}</div>
           </div>`;
@@ -261,11 +277,9 @@
           const text = btn.dataset.text;
           const lang = btn.dataset.lang;
           const utterance = new SpeechSynthesisUtterance(text);
-          // Use the selected dialect if Chinese; otherwise default to en-US
-          const chosenDialect = ttsLangSelect.value;
-          utterance.lang = lang === 'eng' ? 'en-US' : chosenDialect;
+          const chosenDialect = lang === 'eng' ? 'en-US' : ttsLangSelect.value;
+          utterance.lang = chosenDialect;
           speechSynthesis.cancel();
-          console.log('speechSynthesis.getVoices()', speechSynthesis.getVoices())
           speechSynthesis.speak(utterance);
         });
       });
@@ -329,5 +343,4 @@
     });
   </script>
 </body>
-
 </html>
