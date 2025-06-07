@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="bg-gray-50 text-gray-900">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,13 +12,9 @@
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.26.0/dist/index.min.js"></script>
-  <script type="module">
-    import toJyutping from 'https://esm.sh/to-jyutping@3.1.1';
-    window.toJyutping = toJyutping;
-  </script>
-</head>
 
-<!-- Make body a flex column and fill the viewport -->
+  <!-- Make body a flex column and fill the viewport -->
+
 <body class="flex flex-col min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
 
   <!-- Main content: flex-grow so footer stays visible at bottom -->
@@ -43,10 +40,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div>
         <label for="versionA" class="block text-sm font-medium mb-1">Bible A (Left)</label>
-        <select id="versionA"
-          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
+        <select id="versionA" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
           <option disabled selected value="">Select Bible A</option>
-          <option value="en_niv" data-lang="eng">New International Version</option>
           <option value="zh_cuv" data-lang="chi">Chinese Union Version</option>
           <option value="zh_ncv" data-lang="chi">Chinese NCV</option>
           <option value="en_bbe" data-lang="eng">English BBE</option>
@@ -54,8 +49,7 @@
       </div>
       <div>
         <label for="versionB" class="block text-sm font-medium mb-1">Bible B (Right)</label>
-        <select id="versionB"
-          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
+        <select id="versionB" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
           <option disabled selected value="">Select Bible B</option>
           <option value="zh_cuv" data-lang="chi">Chinese Union Version</option>
           <option value="zh_ncv" data-lang="chi">Chinese NCV</option>
@@ -68,10 +62,16 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-6">
       <div class="flex-1">
         <label for="bookSelect" class="block text-sm font-medium mb-1">Book</label>
-        <select id="bookSelect"
-          class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600"
-          disabled>
+        <select id="bookSelect" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600" disabled>
           <option value="">Select Book</option>
+        </select>
+      </div>
+
+      <div class="flex-1">
+        <label for="chapterSelect" class="block text-sm font-medium mb-1">Chapter</label>
+        <select id="chapterSelect" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600"
+          disabled>
+          <option value="">Select Chapter</option>
         </select>
       </div>
 
@@ -97,9 +97,8 @@
         <span>Enable Text-to-Speech</span>
       </label>
       <label class="inline-flex items-center gap-2 text-sm">
-        <span>Chinese TTS Dialect</span>
-        <select id="ttsLangSelect"
-          class="border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-600 text-sm">
+        <span>TTS Dialect</span>
+        <select id="ttsLangSelect" class="border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-600 text-sm">
           <option value="zh-CN">Mandarin</option>
           <option value="zh-HK">Cantonese</option>
         </select>
@@ -114,15 +113,14 @@
     <h2 id="chapterTitle" class="text-xl font-bold mb-2">—</h2>
 
     <!-- Column Headers -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 text-sm font-semibold border-b pb-2 mb-2 dark:border-gray-700">
+    <div class="grid grid-cols-1 sm:grid-cols-2 text-sm font-semibold border-b pb-2 mb-2 dark:border-gray-700">
       <div id="titleA">Bible A</div>
       <div id="titleB">Bible B</div>
     </div>
 
     <!-- Verse Comparison Container -->
     <div id="comparisonContainer" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
-    
+
     <!-- Toast Notification -->
     <div id="toast"
       class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm">
@@ -130,12 +128,14 @@
   </div>
 
   <!-- Footer (always visible at bottom) -->
-<footer
-  style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 0.75rem; color: rgba(0, 0, 0, 0.3); font-weight: 300; z-index: 1000; pointer-events: none;">
-  &copy; 2025 黄俊杰 All rights reserved.
-</footer>
+  <footer
+    style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 0.75rem; color: rgba(0, 0, 0, 0.3); font-weight: 300; z-index: 1000; pointer-events: none;">
+    &copy; 2025 黄俊杰 All rights reserved.
+  </footer>
 
-  <script>
+  <script type="module">
+    import toJyutping from 'https://unpkg.com/to-jyutping@3.1.1?module';
+
     const toggle = document.getElementById('darkModeToggle');
     toggle.addEventListener('change', () => {
       document.documentElement.classList.toggle('dark', toggle.checked);
@@ -200,11 +200,37 @@
     versionA.addEventListener('change', tryEnableBookSelect);
     versionB.addEventListener('change', tryEnableBookSelect);
 
+    bookSelect.addEventListener('change', () => {
+      const verA = versionA.value;
+      const idxBook = parseInt(bookSelect.value, 10);
+      const chapterSelect = document.getElementById('chapterSelect');
+      chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+
+      if (!verA || isNaN(idxBook)) {
+        chapterSelect.disabled = true;
+        return;
+      }
+
+      importBible(verA).then(json => {
+        const chapters = json[idxBook]?.chapters || [];
+        chapterSelect.innerHTML += chapters.map((_, i) =>
+          `<option value="${i}">Chapter ${i + 1}</option>`).join('');
+        chapterSelect.disabled = false;
+      });
+    });
+
     loadBtn.addEventListener('click', async () => {
       const verA = versionA.value;
       const verB = versionB.value;
       const idxBook = parseInt(bookSelect.value, 10);
-      const chapIdx = 0;
+      // const chapIdx = 0;
+
+      const chapIdx = parseInt(document.getElementById('chapterSelect').value, 10);
+      if (isNaN(chapIdx)) {
+        alert('Please select a chapter.');
+        return;
+      }
+
       const bookName = bookSelect.selectedOptions[0]?.text || '';
       queryWordSpan.textContent = bookName.toLowerCase();
 
@@ -251,8 +277,8 @@
             const pinyinA = window.pinyinPro.pinyin(versesA[i], { toneType: 'none', type: 'array' }).join(' ');
             cellA += `<div class="text-xs text-gray-500 dark:text-gray-400 mt-1 pinyin">${pinyinA}</div>`;
           }
-          if (toggleCantonese.checked && typeof window.toJyutping === 'function') {
-            const cantoA = window.toJyutping(versesA[i]);
+          if (toggleCantonese.checked && toJyutping) {
+            const cantoA = toJyutping.getJyutpingText(versesA[i]);
             cellA += `<div class="text-xs text-indigo-500 dark:text-indigo-300 mt-1 cantonese">${cantoA}</div>`;
           }
         }
@@ -262,8 +288,8 @@
             const pinyinB = window.pinyinPro.pinyin(versesB[i], { toneType: 'none', type: 'array' }).join(' ');
             cellB += `<div class="text-xs text-gray-500 dark:text-gray-400 mt-1 pinyin">${pinyinB}</div>`;
           }
-          if (toggleCantonese.checked && typeof window.toJyutping === 'function') {
-            const cantoB = window.toJyutping(versesB[i]);
+          if (toggleCantonese.checked && toJyutping) {
+            const cantoB = toJyutping.getJyutpingText(versesB[i]);
             cellB += `<div class="text-xs text-indigo-500 dark:text-indigo-300 mt-1 cantonese">${cantoB}</div>`;
           }
         }
@@ -297,7 +323,10 @@
       const newParams = new URLSearchParams();
       newParams.set('bible1', verA);
       newParams.set('bible2', verB);
+      // newParams.set('book', idxBook);
       newParams.set('book', idxBook);
+      newParams.set('chapter', chapIdx);
+
       window.history.replaceState(null, '', `${window.location.pathname}?${newParams.toString()}`);
     });
 
@@ -323,16 +352,33 @@
       const params = new URLSearchParams(window.location.search);
       const b1 = params.get('bible1');
       const b2 = params.get('bible2');
+
       const bookParam = params.get('book');
+      const chapterParam = params.get('chapter');
+
 
       if (b1 && b2 && bookParam !== null) {
         versionA.value = b1;
         versionB.value = b2;
         await tryEnableBookSelect();
         const idx = Number(bookParam);
+
         if (!isNaN(idx) && bookSelect.options[idx]) {
           bookSelect.value = idx;
+          bookSelect.dispatchEvent(new Event('change')); // trigger chapter dropdown
+
+          const waitForChapterDropdown = setInterval(() => {
+            const chapterSelect = document.getElementById('chapterSelect');
+            if (chapterSelect && chapterSelect.options.length > 1) {
+              clearInterval(waitForChapterDropdown);
+              if (!isNaN(chapterParam)) {
+                chapterSelect.value = chapterParam;
+              }
+              loadBtn.click();
+            }
+          }, 100);
         }
+
         loadBtn.click();
       }
     });
@@ -349,4 +395,5 @@
     });
   </script>
 </body>
+
 </html>
