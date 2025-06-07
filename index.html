@@ -42,78 +42,13 @@
         <label for="versionA" class="block text-sm font-medium mb-1">Bible A (Left)</label>
         <select id="versionA" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
           <option disabled selected value="">Select Bible A</option>
-          <!-- Arabic -->
-          <option value="ar_svd" data-lang="ara">Arabic Bible (ar_svd)</option>
-          <!-- Chinese -->
-          <option value="zh_cuv" data-lang="chi">Chinese Union Version (zh_cuv)</option>
-          <option value="zh_ncv" data-lang="chi">New Chinese Version (zh_ncv)</option>
-          <!-- German -->
-          <option value="de_schlachter" data-lang="ger">Schlachter (de_schlachter)</option>
-          <!-- Greek -->
-          <option value="el_greek" data-lang="gre">Modern Greek (el_greek)</option>
-          <!-- English -->
-          <option value="en_bbe" data-lang="eng">Basic English (en_bbe)</option>
-          <option value="en_kjv" data-lang="eng">King James Version (en_kjv)</option>
-          <!-- Esperanto -->
-          <option value="eo_esperanto" data-lang="epo">Esperanto (eo_esperanto)</option>
-          <!-- Spanish -->
-          <option value="es_rvr" data-lang="spa">Reina Valera (es_rvr)</option>
-          <!-- Finnish -->
-          <option value="fi_finnish" data-lang="fin">Finnish Bible (fi_finnish)</option>
-          <option value="fi_pr" data-lang="fin">Pyhä Raamattu (fi_pr)</option>
-          <!-- French -->
-          <option value="fr_apee" data-lang="fre">Le Bible de I'Épée (fr_apee)</option>
-          <!-- Korean -->
-          <option value="ko_ko" data-lang="kor">Korean Version (ko_ko)</option>
-          <!-- Portuguese -->
-          <option value="pt_aa" data-lang="por">Almeida Revisada Imprensa Bíblica (pt_aa)</option>
-          <option value="pt_acf" data-lang="por">Almeida Corrigida e Revisada Fiel (pt_acf)</option>
-          <option value="pt_nvi" data-lang="por">Nova Versão Internacional (pt_nvi)</option>
-          <!-- Romanian -->
-          <option value="ro_cornilescu" data-lang="rom">Versiunea Dumitru Cornilescu (ro_cornilescu)</option>
-          <!-- Russian -->
-          <option value="ru_synodal" data-lang="rus">Синодальный перевод (ru_synodal)</option>
-          <!-- Vietnamese -->
-          <option value="vi_vietnamese" data-lang="vie">Tiếng Việt (vi_vietnamese)</option>
+
         </select>
       </div>
       <div>
         <label for="versionB" class="block text-sm font-medium mb-1">Bible B (Right)</label>
         <select id="versionB" class="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-600">
           <option disabled selected value="">Select Bible B</option>
-          <!-- Arabic -->
-          <option value="ar_svd" data-lang="ara">Arabic Bible (ar_svd)</option>
-          <!-- Chinese -->
-          <option value="zh_cuv" data-lang="chi">Chinese Union Version (zh_cuv)</option>
-          <option value="zh_ncv" data-lang="chi">New Chinese Version (zh_ncv)</option>
-          <!-- German -->
-          <option value="de_schlachter" data-lang="ger">Schlachter (de_schlachter)</option>
-          <!-- Greek -->
-          <option value="el_greek" data-lang="gre">Modern Greek (el_greek)</option>
-          <!-- English -->
-          <option value="en_bbe" data-lang="eng">Basic English (en_bbe)</option>
-          <option value="en_kjv" data-lang="eng">King James Version (en_kjv)</option>
-          <!-- Esperanto -->
-          <option value="eo_esperanto" data-lang="epo">Esperanto (eo_esperanto)</option>
-          <!-- Spanish -->
-          <option value="es_rvr" data-lang="spa">Reina Valera (es_rvr)</option>
-          <!-- Finnish -->
-          <option value="fi_finnish" data-lang="fin">Finnish Bible (fi_finnish)</option>
-          <option value="fi_pr" data-lang="fin">Pyhä Raamattu (fi_pr)</option>
-          <!-- French -->
-          <option value="fr_apee" data-lang="fre">Le Bible de I'Épée (fr_apee)</option>
-          <!-- Korean -->
-          <option value="ko_ko" data-lang="kor">Korean Version (ko_ko)</option>
-          <!-- Portuguese -->
-          <option value="pt_aa" data-lang="por">Almeida Revisada Imprensa Bíblica (pt_aa)</option>
-          <option value="pt_acf" data-lang="por">Almeida Corrigida e Revisada Fiel (pt_acf)</option>
-          <option value="pt_nvi" data-lang="por">Nova Versão Internacional (pt_nvi)</option>
-          <!-- Romanian -->
-          <option value="ro_cornilescu" data-lang="rom">Versiunea Dumitru Cornilescu (ro_cornilescu)</option>
-          <!-- Russian -->
-          <option value="ru_synodal" data-lang="rus">Синодальный перевод (ru_synodal)</option>
-          <!-- Vietnamese -->
-          <option value="vi_vietnamese" data-lang="vie">Tiếng Việt (vi_vietnamese)</option>
         </select>
       </div>
     </div>
@@ -193,6 +128,53 @@
     &copy; 2025 黄俊杰 All rights reserved.
   </footer>
 
+  <!-- Shared template for all version options -->
+  <template id="version-options">
+    <!-- Arabic 🇸🇦 -->
+    <option value="ar_svd" data-lang="ara">🇸🇦 Arabic (ar_svd)</option>
+    <!-- Chinese 🇨🇳 -->
+    <option value="zh_cuv" data-lang="chi">🇨🇳 CUV (zh_cuv)</option>
+    <option value="zh_ncv" data-lang="chi">🇨🇳 NCV (zh_ncv)</option>
+    <!-- German 🇩🇪 -->
+    <option value="de_schlachter" data-lang="ger">🇩🇪 Schlachter (de_schlachter)</option>
+    <!-- Greek 🇬🇷 -->
+    <option value="el_greek" data-lang="gre">🇬🇷 Modern Greek (el_greek)</option>
+    <!-- English 🇬🇧 -->
+    <option value="en_bbe" data-lang="eng">🇬🇧 Basic English (en_bbe)</option>
+    <option value="en_kjv" data-lang="eng">🇬🇧 King James (en_kjv)</option>
+    <!-- Esperanto 🌐 -->
+    <option value="eo_esperanto" data-lang="epo">🌐 Esperanto (eo_esperanto)</option>
+    <!-- Spanish 🇪🇸 -->
+    <option value="es_rvr" data-lang="spa">🇪🇸 Reina Valera (es_rvr)</option>
+    <!-- Finnish 🇫🇮 -->
+    <option value="fi_finnish" data-lang="fin">🇫🇮 Finnish Bible (fi_finnish)</option>
+    <option value="fi_pr" data-lang="fin">🇫🇮 Pyhä Raamattu (fi_pr)</option>
+    <!-- French 🇫🇷 -->
+    <option value="fr_apee" data-lang="fre">🇫🇷 Bible de l'Épée (fr_apee)</option>
+    <!-- Korean 🇰🇷 -->
+    <option value="ko_ko" data-lang="kor">🇰🇷 Korean Version (ko_ko)</option>
+    <!-- Portuguese 🇵🇹 -->
+    <option value="pt_aa" data-lang="por">🇵🇹 Almeida AA (pt_aa)</option>
+    <option value="pt_acf" data-lang="por">🇵🇹 Almeida ACF (pt_acf)</option>
+    <option value="pt_nvi" data-lang="por">🇵🇹 NVI (pt_nvi)</option>
+    <!-- Romanian 🇷🇴 -->
+    <option value="ro_cornilescu" data-lang="rom">🇷🇴 Cornilescu (ro_cornilescu)</option>
+    <!-- Russian 🇷🇺 -->
+    <option value="ru_synodal" data-lang="rus">🇷🇺 Синодальный (ru_synodal)</option>
+    <!-- Vietnamese 🇻🇳 -->
+    <option value="vi_vietnamese" data-lang="vie">🇻🇳 Tiếng Việt (vi_vietnamese)</option>
+  </template>
+
+  <!-- Script to clone options into both selects -->
+  <script>
+    const template = document.getElementById('version-options').content;
+    const selects = [document.getElementById('versionA'), document.getElementById('versionB')];
+    selects.forEach(sel => {
+      // clone all children of the template into each select
+      sel.append(...Array.from(template.cloneNode(true).children));
+    });
+  </script>
+
   <script type="module">
     import toJyutping from 'https://unpkg.com/to-jyutping@3.1.1?module';
 
@@ -203,7 +185,7 @@
     });
 
     function getBibleVersionURL(languageKey) {
-      return `https://raw.githubusercontent.com/victorzhunjie/parallel-bible/master/bible/${languageKey}.json`;
+      return `https://raw.githubusercontent.com/victorzhunjie/parallel-bible/refs/heads/main/bible/${languageKey}.json`
     }
     const loadedBibles = {};
     const versionA = document.getElementById('versionA');
